@@ -1,84 +1,77 @@
 package org.Steptestcase;
 
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.Testcase.Base.Baseclass;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.pom.*;
 
-import java.time.Duration;
+import java.io.IOException;
 
-public class StepdefinitionTc18 {
 
-    WebDriver driver;
-    @Given(": User should Launch Browser")
-    public void userShouldLaunchBrowser() {
+public class StepdefinitionTc17 extends Baseclass {
+    registerpage rm;
+    pomTest13 pc13;
+    pomTest12 pc12;
+    pomTest14 pc14;
+    pomTest17 pc17;
 
-        driver= new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 
+
+    @Given(": Verify the Home page is visible successfully")
+    public void verifyTheHomePageIsVisibleSuccessfully() {
+        rm= new registerpage(driver);
+        pc13= new pomTest13(driver);
+        pc12= new pomTest12(driver);
+        pc14= new pomTest14(driver);
+        pc17= new pomTest17(driver);
+
+        log("Homepage Text is visible:" + retrivetext(rm.getHomepagetxt()));
+        Assert.assertTrue(retrivetext(rm.getHomepagetxt()), true);
     }
-    @Given(": User should Navigate to url")
-    public void userShouldNavigateToUrl() {
-
-        driver.navigate().to("http://automationexercise.com");
-
-    }
-    @Then(":Verify that categories are visible on left side bar")
-    public void verifyThatCategoriesAreVisibleOnLeftSideBar() {
-
-        WebElement verifycategory = driver.findElement(By.xpath("//div[@class='left-sidebar']"));
-        String text = verifycategory.getText();
-        Assert.assertEquals(text,"Category");
+    @Then(":Add products to Cart")
+    public void addProductsToCart() throws InterruptedException {
 
 
-    }
-    @When(":Click on Women category")
-    public void clickOnWomenCategory() {
 
-        WebElement Womencategory = driver.findElement(By.xpath("//*[@id='accordian']/div[1]/div[1]/h4/a"));
-        JavascriptExecutor js1= (JavascriptExecutor) driver;
-        js1.executeScript("arguments[0].click();",Womencategory);
+        Btnclick(pc12.getProductbtn());
 
-    }
-    @When(":Click on any category link under Women category for example Dress")
-    public void clickOnAnyCategoryLinkUnderWomenCategoryForExampleDress() {
+        Timer();
+        setJs(pc13.getViewproduct());
 
-        WebElement Dress = driver.findElement(By.xpath("//*[@id='Women']/div/ul/li[1]/a"));
-        JavascriptExecutor js2=(JavascriptExecutor)driver;
-        js2.executeScript("arguments[0].click();",Dress);
+        String text = retrivetext(pc13.getProductdetail());
+       Assert.assertTrue(retrivetext(pc13.getProductdetail()),true);
+
+        Btnclick(pc13.getAddtocart());
+
+        Btnclick(pc12.getContinuebtn());
 
 
     }
-    @Then(":Verify that category page is displayed and confirm text WOMEN - TOPS PRODUCTS")
-    public void verifyThatCategoryPageIsDisplayedAndConfirmTextWOMENTOPSPRODUCTS() {
+    @When(":Click cart button")
+    public void clickCartButton() throws InterruptedException {
+        Timer();
 
-        WebElement verifyWomentext = driver.findElement(By.xpath("//h2[@class='title text-center']"));
-        String text2 = verifyWomentext.getText();
-        System.out.println("verify Women Text:"+text2);
-
+        setJs(pc14.getCartbtn());
 
     }
-    @When(":On left side bar click on any sub-category link of Men category")
-    public void onLeftSideBarClickOnAnySubCategoryLinkOfMenCategory() {
-
-
-
-    }
-    @Then(":Verify that user is navigated to that category page")
-    public void verifyThatUserIsNavigatedToThatCategoryPage() {
-
-
-
+    @Then(":Verify that Cart page is displayed")
+    public void verifyThatCartPageIsDisplayed() {
+        log("verify the cart page:"+retrivetext(pc14.getVerifyThatCartPage()));
+        Assert.assertTrue(retrivetext(pc14.getVerifyThatCartPage()),true);
 
     }
+    @When(":Click X button corresponding to particular product")
+    public void clickXButtonCorrespondingToParticularProduct() {
+        setJs(pc17.getXbutton());
+    }
+    @Then(":Verify that product is removed from the cart")
+    public void verifyThatProductIsRemovedFromTheCart() throws IOException {
 
-
-
-
+        log("verify cart empty:"+retrivetext(pc17.getVerifycartempty()));
+        Assert.assertTrue(retrivetext(pc17.getVerifycartempty()),true);
+        screenshots(driver,"ImageTc-17");
+    }
 }

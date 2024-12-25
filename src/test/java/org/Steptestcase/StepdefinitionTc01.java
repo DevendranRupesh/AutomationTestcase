@@ -1,203 +1,182 @@
-package org.Steptestcase1;
+package org.Steptestcase;
 
+
+import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+import org.Testcase.Base.Baseclass;
+import org.junit.Assert;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
+import org.pom.registerpage;
 
-import java.time.Duration;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
-public class Stepdefinitiontc01 {
 
-    WebDriver driver;
-    @Given(":Launch the browser")
-    public void launchTheBrowser() {
+public class StepdefinitionTc01 extends Baseclass {
 
-         driver= new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+    registerpage rm;
+
+    @Given("User verify that home page is visible successfully")
+    public void userVerifyThatHomePageIsVisibleSuccessfully() {
+
+        rm = new registerpage(driver);
+
+        log("Homepage Text is visible:" + retrivetext(rm.getHomepagetxt()));
+        Assert.assertTrue(retrivetext(rm.getHomepagetxt()), true);
+    }
+
+    @When("User click on Signup & Login button")
+    public void userClickOnSignupLoginButton() {
+
+        rm = new registerpage(driver);
+
+        setJs(rm.getLoginbtn());
 
     }
-    @Given(":  User navigate to the url page")
-    public void userNavigateToTheUrlPage() {
-        driver.get("http://automationexercise.com");
 
-
-    }
-    @Then(": Verify that home page is visible successfully")
-    public void verifyThatHomePageIsVisibleSuccessfully() {
-        WebElement homepagetxt = driver.findElement(By.xpath("//img[@alt='Website for automation practice']"));
-        String text = homepagetxt.getText();
-        System.out.println("Homepage Text is visible:"+text);
-
-    }
-    @When(":Click on Signup & Login button")
-    public void clickOnSignupLoginButton() {
-        WebElement loginbtn = driver.findElement(By.xpath("//a[text()=' Signup / Login']"));
-        loginbtn.click();
-    }
-    @Then(":Verify New User Signup is visible")
+    @Then("User verify New User Signup is visible")
     public void verifyNewUserSignupIsVisible() {
 
-        WebElement signuptxt = driver.findElement(By.xpath("//h2[text()='New User Signup!']"));
-        String text1 = signuptxt.getText();
-        System.out.println("signup text is visible:"+text1);
+        log("signup text is visible:" + retrivetext(rm.getSignuptxt()));
+        Assert.assertTrue(retrivetext(rm.getSignuptxt()), true);
 
     }
-    @Then(":Enter name and email address")
-    public void enterNameAndEmailAddress() {
 
-        driver.findElement(By.xpath("//input[@type='text']")).sendKeys("kkabir");
-        driver.findElement(By.xpath("//input[@data-qa='signup-email']")).sendKeys("kkabir1234@gmail.com");
+    @And("User enter the following username {string} and Email{string}")
+    public void userEnterTheFollowingUsernameAndEmail(String name, String email) {
 
+        insert(rm.getName(),name);
+        insert(rm.getEmail(),email);
     }
-    @When(":Click Signup button")
+
+    @When("User click Signup button")
     public void clickSignupButton() {
+        Btnclick(rm.getSignupbtn());
 
-        driver.findElement(By.xpath("//button[@data-qa='signup-button']")).click();
 
     }
-    @Then(":Verify that ENTER ACCOUNT INFORMATION is visible")
+
+
+    @Then("User verify that ENTER ACCOUNT INFORMATION is visible")
     public void verifyThatENTERACCOUNTINFORMATIONIsVisible() {
 
-        WebElement visibletxt = driver.findElement(By.xpath("//b[text()='Enter Account Information']"));
-        String text3 = visibletxt.getText();
-        System.out.println("Text is clearly visible:"+text3);
+        log("Text is clearly visible:" + retrivetext(rm.getVisibletxt()));
+        Assert.assertTrue(retrivetext(rm.getVisibletxt()), true);
 
     }
-    @Then(":Fill details: Title, Name, Email, Password, Date of birth")
+
+    @Then("User fill details: Title, Name, Email, Password, Date of birth")
     public void fillDetailsTitleNameEmailPasswordDateOfBirth() {
 
-        WebElement title = driver.findElement(By.xpath("//input[@value='Mr']"));
-        title.click();
+        Btnclick(rm.getTitle());
 
-        WebElement name = driver.findElement(By.xpath("//input[@type='text']"));
-        name.clear();
-        name.sendKeys("sombir");
+        rm.getName1().clear();
+        insert(rm.getName1(), "sombir");
+        insert(rm.getPass(), "ranbir12345678");
 
-        WebElement pass = driver.findElement(By.xpath("//input[@type='password']"));
-        pass.sendKeys("kabir12345678");
+        select(rm.getDays(), 3);
+        select(rm.getMonths(), 4);
+        select(rm.getYears(), 3);
 
-        WebElement days = driver.findElement(By.id("days"));
-        Select sc= new Select(days);
-        sc.selectByIndex(3);
-
-        WebElement months = driver.findElement(By.id("months"));
-        Select sc1= new Select(months);
-        sc1.selectByIndex(4);
-
-        WebElement years = driver.findElement(By.id("years"));
-        Select sc2= new Select(years);
-        sc2.selectByIndex(3);
     }
-    @Then(":Select checkbox Sign up for our newsletter!")
+
+    @Then("User select checkbox Sign up for our newsletter!")
     public void selectCheckboxSignUpForOurNewsletter() throws InterruptedException {
-        Thread.sleep(1000);
-        WebElement radiobtn1 = driver.findElement(By.id("newsletter"));
-        JavascriptExecutor js= (JavascriptExecutor) driver;
-        js.executeScript("window.scrollTo(294, 670);");
-        radiobtn1.click();
+        Timer();
+        setJs(rm.getRadiobtn1());
 
     }
-    @Then(": Select checkbox Receive special offers from our partners!")
+
+    @Then("User select checkbox Receive special offers from our partners!")
     public void selectCheckboxReceiveSpecialOffersFromOurPartners() throws InterruptedException {
 
-        WebElement receiveoffbtn = driver.findElement(By.id("optin"));
-        receiveoffbtn.click();
+        setJs(rm.getReceiveoffbtn());
 
 
     }
-    @Then(":Fill details: First name, Last name, Company, Address, Address2, Country, State, City, Zipcode, Mobile Number")
+
+    @Then("User fill details: First name, Last name, Company, Address, Address2, Country, State, City, Zipcode, Mobile Number")
     public void fillDetailsFirstNameLastNameCompanyAddressAddress2CountryStateCityZipcodeMobileNumber() throws InterruptedException {
-        Thread.sleep(1000);
+        Timer();
 
-        WebElement Firstname = driver.findElement(By.id("first_name"));
-        Firstname.sendKeys("ramesh");
+        insert(rm.getFirstname(), "ramesh");
+
+        insert(rm.getLastname(), "kumar");
+
+        insert(rm.getCompany(), "miletechindustries");
+
+        insert(rm.getAddress(), "plot no.82 vinayagast");
+
+        insert(rm.getAdd2(), "ramapuram extend road");
+
+        Timer();
+
+        select(rm.getCountry(), 5);
 
 
-        WebElement lastname = driver.findElement(By.cssSelector("#last_name"));
-        lastname.sendKeys("kumar");
+        insert(rm.getState(), "tamilnadu");
 
-        WebElement company = driver.findElement(By.cssSelector("#company"));
-        company.sendKeys("miletechindustries");
+        insert(rm.getCty(), "chennai");
 
-        WebElement Address = driver.findElement(By.cssSelector("p>input[data-qa='address']"));
-        Address.sendKeys("plot no.82 vinayagast");
+        insert(rm.getZpcode(), "600126");
 
-        WebElement Add2 = driver.findElement(By.cssSelector("p>input[data-qa='address2']"));
-        Add2.sendKeys("ramapuram extend road");
+        Timer();
 
-        Thread.sleep(1000);
-
-        WebElement country = driver.findElement(By.cssSelector("#country"));
-        Select sc3= new Select(country);
-        sc3.selectByIndex(5);
-
-        WebElement state = driver.findElement(By.id("state"));
-        state.sendKeys("tamilnadu");
-
-        WebElement cty = driver.findElement(By.id("city"));
-        cty.sendKeys("chennai");
-
-        WebElement zpcode = driver.findElement(By.id("zipcode"));
-        zpcode.sendKeys("600126");
-
-        Thread.sleep(1000);
-
-        WebElement Mobno = driver.findElement(By.cssSelector("[data-qa='mobile_number']"));
-        Mobno.sendKeys("9999999999");
+        insert(rm.getMobno(), "9999999999");
 
     }
-    @When(":Click Create Account button")
+
+    @When("User click Create Account button")
     public void clickCreateAccountButton() {
+        Sbtclick(rm.getCreateAcbtn());
 
-        WebElement createAcbtn = driver.findElement(By.xpath("//button[@data-qa='create-account']"));
-        createAcbtn.submit();
     }
-    @Then(":Verify that ACCOUNT CREATED is visible")
+
+    @Then("User verify that ACCOUNT CREATED is visible")
     public void verifyThatACCOUNTCREATEDIsVisible() {
-        WebElement Accverify = driver.findElement(By.xpath("//b[text()='Account Created!']"));
-        String text4 = Accverify.getText();
-        System.out.println("Text is visible:"+text4);
+        log("Text is visible:" + retrivetext(rm.getAccverify()));
+        Assert.assertTrue(retrivetext(rm.getAccverify()), true);
     }
-    @When(": Click Continue button")
+
+    @When("User click Continue button")
     public void clickContinueButton() {
-
-        WebElement continuebtn = driver.findElement(By.cssSelector("[class='btn btn-primary']"));
-        continuebtn.click();
+        Btnclick(rm.getContinuebtn());
 
     }
-    @Then(":Verify that Logged in as username is visible")
+
+    @Then("User verify that logged in as username is visible")
     public void verifyThatLoggedInAsUsernameIsVisible() {
 
-        WebElement usertext = driver.findElement(By.xpath("//a[text()=' Logged in as ']"));
-        String text5 = usertext.getText();
-        System.out.println("username is visible:"+text5);
-
+        log("username is visible:" + retrivetext(rm.getUsertext()));
+        Assert.assertTrue(retrivetext(rm.getUsertext()), true);
     }
-    @When(":Click Delete Account button")
+
+
+    @When("User click Delete Account button")
     public void clickDeleteAccountButton() {
-
-        WebElement DeleteAc = driver.findElement(By.xpath("//i[@class='fa fa-trash-o']"));
-        DeleteAc.click();
-    }
-    @Then(":Verify that ACCOUNT DELETED! is visible and click Continue button")
-    public void verifyThatACCOUNTDELETEDIsVisibleAndClickContinueButton() {
-
-        WebElement Accdeltext = driver.findElement(By.cssSelector("[data-qa='account-deleted']"));
-        String text6 = Accdeltext.getText();
-        System.out.println("Text is visible:"+text6);
-
-        WebElement continuebtn = driver.findElement(By.xpath("//a[@data-qa='continue-button']"));
-        continuebtn.click();
+        Btnclick(rm.getDeleteAc());
 
     }
 
+    @Then("User verify that ACCOUNT DELETED! is visible and click Continue button")
+    public void verifyThatACCOUNTDELETEDIsVisibleAndClickContinueButton() throws InterruptedException, IOException {
+        Timer();
+        log("Text is visible:" + retrivetext(rm.getAccdeltext()));
+        Assert.assertTrue(retrivetext(rm.getAccdeltext()), true);
 
-
+        Btnclick(rm.getContinuebtn1());
+        screenshots(driver, "ImageTc-01");
+    }
 }
+
+
+
+
+
+
+
+

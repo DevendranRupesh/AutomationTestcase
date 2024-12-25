@@ -1,96 +1,70 @@
-package org.Steptestcase1;
+package org.Steptestcase;
+
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.Testcase.Base.Baseclass;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.pom.pomTest2;
+import org.pom.registerpage;
 
-import java.time.Duration;
+import java.io.IOException;
 
-public class Steptestcase2 {
+import static org.Testcase.Base.Baseclass.*;
 
-    WebDriver driver;
+public class StepdefinitionTc02 {
 
-    @Given(":user should login the browser")
-    public void userShouldLoginTheBrowser() {
-
-        driver= new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-    }
-    @Given(": user navigate to url")
-    public void userNavigateToUrl() {
-        driver.get("http://automationexercise.com");
-    }
-    @Then(":  verify the homepage is visible sucessfully")
+    registerpage rm;
+    pomTest2 pc2;
+    @Given("User verify the homepage is visible sucessfully")
     public void verifyTheHomepageIsVisibleSucessfully() {
+        rm= new registerpage(driver);
+        pc2= new pomTest2(driver);
 
-        WebElement homepage = driver.findElement(By.xpath("//a[text()=' Home']"));
-        String text = homepage.getTagName();
-        System.out.println("Homepage text is visible:"+text);
+        log("verify the text:"+retrivetext(rm.getHomepagetxt()));
+        Assert.assertTrue(retrivetext(rm.getHomepagetxt()),true);
 
     }
-    @When(":click on signup login button")
+    @When("User click on signup login button")
     public void clickOnSignupLoginButton() {
-        WebElement signup = driver.findElement(By.xpath("//i[@class='fa fa-lock']"));
-        signup.click();
+     Btnclick(pc2.getSignup());
 
     }
-    @Then(": Verify Login to your account is visible")
+    @Then("User verify Login to your account is visible")
     public void verifyLoginToYourAccountIsVisible() {
-
-        WebElement logintxt = driver.findElement(By.xpath("//h2[text()='Login to your account']"));
-        String text2 = logintxt.getText();
-        Assert.assertTrue(text2, true);
+        log("verify the text login "+retrivetext(rm.getHomepagetxt()));
+        Assert.assertTrue(retrivetext(rm.getHomepagetxt()), true);
     }
-    @Then(": Enter correct emailaddress and password")
+    @Then("User enter correct emailaddress and password")
     public void enterCorrectEmailaddressAndPassword() {
-        WebElement emailadd = driver.findElement(By.cssSelector("[data-qa='login-email']"));
-        emailadd.sendKeys("ragu123@gmail.com");
 
-        WebElement password = driver.findElement(By.cssSelector("[data-qa='login-password']"));
-        password.sendKeys("ramesh1234567");
+        insert(pc2.getEmailadd(),"naveen145@gmail.com");
+        insert(pc2.getPassword(),"ranbir12345678");
 
     }
-
-
-    @When(": click login button")
+    @When("User click login button")
     public void clickLoginButton() {
 
-        WebElement lgnbtn = driver.findElement(By.xpath("//button[text()='Login']"));
-        lgnbtn.click();
+        Btnclick(pc2.getLgnbtn());
+
     }
-
-
-    @Then(": Verify that Logged in as username should be visible")
+    @Then("User verify that Logged in as username should be visible")
     public void verifyThatLoggedInAsUsernameShouldBeVisible() {
 
-        WebElement userverify = driver.findElement(By.xpath("//a[text()=' Logged in as ']"));
-        String text2 = userverify.getText();
-        System.out.println("username received as :"+text2);
+        log("username received as :"+retrivetext(pc2.getUserverify()));
+        Assert.assertTrue(retrivetext(pc2.getUserverify()), true);
     }
-
-
-    @When(": Click Delete Account button")
+    @When("User Click Delete Account button")
     public void clickDeleteAccountButton() {
-        WebElement delacc = driver.findElement(By.cssSelector("[href='/delete_account']"));
-        delacc.click();
+
+        Btnclick(pc2.getDelacc());
+    }
+    @Then("User verify that Account Delete is visible")
+    public void verifyThatAccountDeleteIsVisible() throws IOException {
+        log("Text is visible:"+retrivetext(pc2.getDelacctext()));
+        Assert.assertTrue(retrivetext(pc2.getDelacctext()), true);
+        screenshots(driver,"ImageTc-02");
 
     }
-
-
-    @Then(":  Verify that Account Delete is visible")
-    public void verifyThatAccountDeleteIsVisible() {
-
-        WebElement delacctext = driver.findElement(By.xpath("//b[text()='Account Deleted!']"));
-        String text3 = delacctext.getText();
-        System.out.println("Text is visible:"+text3);
-    }
-
-
-
 }
