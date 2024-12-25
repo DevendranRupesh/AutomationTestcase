@@ -20,5 +20,5 @@ Scenario Outline:User should Register to login
     Then   User verify that ACCOUNT DELETED! is visible and click Continue button
   Examples:
     |name  |    email       |
-    |naresh|naresh143@gmail.com|
+    |sourish|sourish143@gmail.com|
     |suresh|suresh431@gmail.com|

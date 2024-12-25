@@ -16,7 +16,7 @@ public class Hooks {
         Baseclass.launchbrowser();
         Baseclass.chromeoptions();
         Baseclass.maximizewindow();
-        Baseclass.implicitwait(30);
+        Baseclass.implicitwait(50);
         Baseclass.geturl("http://automationexercise.com");
     }
 

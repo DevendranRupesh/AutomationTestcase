@@ -53,7 +53,7 @@ public class Baseclass {
         driver.get(url);
     }
 
-    public static void getcurrenturl() {
+    public static void getcurrenturls() {
         driver.getCurrentUrl();
     }
 
